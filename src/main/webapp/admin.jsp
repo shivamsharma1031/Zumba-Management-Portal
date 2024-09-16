@@ -1,4 +1,7 @@
-<%@ page import="java.sql.*, java.util.*" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.zumba.dao.SlotDAO, com.zumba.dao.ParticipantDAO" %>
+<%@ page import="com.zumba.pojo.Slot, com.zumba.pojo.Participant" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page session="true" %>
 <html>
 <head>
@@ -74,40 +77,31 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
-    <a href="index.jsp" class="back-button">Back to Home</a>
-    
-    <%
+<a href="index.jsp" class="back-button">Back to Home</a>
+
+<%
     Boolean isAllowed = (Boolean) session.getAttribute("isAdmin");
     if (isAllowed == null || !isAllowed) {
-    %>
+%>
         <div class="no-privilege-message">No privilege to view this page.</div>
-    <%
+<%
     } else {
-        // Database connection setup
-        String url = "jdbc:mysql://localhost:3306/zumba_management_portal";
-        String username = "root"; // replace with your MySQL username
-        String password = "Password"; // replace with your MySQL password
+        SlotDAO slotDAO = new SlotDAO();
+        ParticipantDAO participantDAO = new ParticipantDAO();
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rsSlots = null;
-        ResultSet rsParticipants = null;
+        // Fetch all slots
+        List<Slot> slots = slotDAO.getAllSlots();
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url, username, password);
+        // Define date and time formatters
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yy");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
-            // Query to get all slots
-            String slotsQuery = "SELECT id, slot_date, slot_time FROM zumba_slots";
-            pstmt = conn.prepareStatement(slotsQuery);
-            rsSlots = pstmt.executeQuery();
-
-            while (rsSlots.next()) {
-                int slotId = rsSlots.getInt("id");
-                String slotDate = rsSlots.getString("slot_date");
-                String slotTime = rsSlots.getString("slot_time");
-
-    %>
+        for (Slot slot : slots) {
+            // Format slot date and time
+            String slotDate = dateFormatter.format(slot.getSlotDate());
+            String slotTime = timeFormatter.format(slot.getSlotTime());
+            int slotId = slot.getId();
+%>
     <!-- Display the slot date and time as a heading -->
     <div class="session-heading">Zumba Slot: <%= slotDate %> at <%= slotTime %></div>
 
@@ -123,60 +117,35 @@
         </thead>
         <tbody>
         <%
-            // Query to get participants registered for this slot
-            String participantsQuery = "SELECT u.name, u.email, u.weight, u.height " +
-                                       "FROM zumba_registrations r " +
-                                       "JOIN users u ON r.user_id = u.id " +
-                                       "WHERE r.slot_id = ?";
-            PreparedStatement psParticipants = conn.prepareStatement(participantsQuery);
-            psParticipants.setInt(1, slotId);
-            rsParticipants = psParticipants.executeQuery();
+            // Fetch participants registered for this slot
+            List<Participant> participants = participantDAO.getParticipantsBySlotId(slotId);
 
-            boolean hasParticipants = false;
-            while (rsParticipants.next()) {
-                hasParticipants = true;
-                String participantName = rsParticipants.getString("name");
-                String email = rsParticipants.getString("email");
-                double weight = rsParticipants.getDouble("weight");
-                double height = rsParticipants.getDouble("height");
-        %>
-        <tr>
-            <td><%= participantName %></td>
-            <td><%= email %></td>
-            <td><%= weight %></td>
-            <td><%= height %></td>
-        </tr>
-        <%
-            }
-
-            if (!hasParticipants) {
+            if (participants.isEmpty()) {
         %>
         <!-- Message when there are no participants for a slot -->
         <tr>
             <td colspan="4">No participants registered for this slot.</td>
         </tr>
         <%
+            } else {
+                for (Participant participant : participants) {
+        %>
+        <tr>
+            <td><%= participant.getName() %></td>
+            <td><%= participant.getEmail() %></td>
+            <td><%= participant.getWeight() %></td>
+            <td><%= participant.getHeight() %></td>
+        </tr>
+        <%
+                }
             }
-
-            // Close participants result set and statement
-            rsParticipants.close();
-            psParticipants.close();
         %>
         </tbody>
     </table>
-
-    <%
-            }
-
-        } catch (Exception e) {
-            out.println("<p class='error'>Database connection failed: " + e.getMessage() + "</p>");
-        } finally {
-            if (rsSlots != null) rsSlots.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
+<%
         }
-    } 
-    %>
+    }
+%>
 
 </body>
 </html>

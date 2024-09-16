@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.header {
+    background-color: #2980b9;
+    color: #ecf0f1;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.user-session {
+    float: right;
+}
+
+.action-btn {
+    background-color: #27ae60;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 4px;
+}
+
+.action-btn:hover {
+    background-color: #218c54;
+}
+
+.table-container {
+    width: 90%;
+    margin: 30px auto;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 0;
+    text-align: center;
+    height: 50px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr {
+    height: 50px;
+}
+
+.cell-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+}
+
+form {
+    display: flex; /* Use flexbox to center the form content */
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0; /* Remove default margins to fix alignment */
+}
+
+.btn-register, .btn-deregister {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 30px;
+    margin: 0; /* Ensure button is centered by removing default margins */
+}
+
+.btn-deregister {
+    background-color: #e74c3c;
+}
+
+.btn-register:hover {
+    background-color: #2980b9;
+}
+
+.btn-deregister:hover {
+    background-color: #c0392b;
+}
+
+.message {
+    color: #e74c3c;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
