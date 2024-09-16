@@ -1,0 +1,88 @@
+# Maven target directory
+/target/
+
+# Maven specific files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse/STS specific files
+/.classpath
+/.project
+/.settings/
+/.idea/
+/*.iml
+/.factorypath
+
+# IntelliJ IDEA specific files
+/.idea/
+/*.iws
+/*.iml
+/*.ipr
+
+# VS Code specific files
+/.vscode/
+/*.code-workspace
+
+# MacOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Log files
+*.log
+
+# Generated Java files
+*.class
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~.nib
+._*
+
+# Node modules (if any front-end development)
+/node_modules/
+
+# Coverage files
+/coverage/
+/.jacoco/
+
+# Custom logs and other output files
+/logs/
+/logs/*
+
+# Ignore database configuration or credentials
+*.db
+*.env
+*.sqlite
+
+# Local environment and sensitive files
+*.local
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Backup files
+*.bak
+*.old
+
+# Ignore generated JAR/WAR files
+*.jar
+*.war
+
+# Ignore the build directories
+/build/
+
